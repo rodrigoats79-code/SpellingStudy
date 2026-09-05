@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Spelling Study</title>
+
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background: #f2f4f8;
+        text-align: center;
+        margin: 0;
+        padding: 40px 20px;
+    }
+
+    .contenedor {
+        max-width: 700px;
+        margin: auto;
+        background: white;
+        padding: 35px;
+        border-radius: 20px;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    h1 {
+        font-size: 42px;
+        margin-bottom: 10px;
+    }
+
+    h2 {
+        margin-top: 10px;
+    }
+
+    input {
+        width: 80%;
+        padding: 14px;
+        font-size: 18px;
+        border-radius: 10px;
+        border: 1px solid #bbb;
+        margin: 10px;
+    }
+
+    select {
+        padding: 12px;
+        font-size: 17px;
+        border-radius: 10px;
+        margin: 10px;
+    }
+
+    button {
+        padding: 13px 22px;
+        font-size: 17px;
+        border: none;
+        border-radius: 10px;
+        cursor: pointer;
+        margin: 7px;
+    }
+
+    .principal {
+        font-size: 20px;
+        padding: 16px 30px;
+    }
+
+    .palabra-numero {
+        font-size: 20px;
+        color: #666;
+    }
+
+    .resultado {
+        font-size: 25px;
+        font-weight: bold;
+        margin: 20px;
+    }
+
+    .correcto {
+        color: green;
+    }
+
+    .incorrecto {
+        color: red;
+    }
+
+    .oculto {
+        display: none;
+    }
+
+    .palabras-error {
+        background: #fff3f3;
+        padding: 15px;
+        border-radius: 12px;
+        margin-top: 20px;
+    }
+
+    .palabras-error ul {
+        list-style: none;
+        padding: 0;
+    }
+
+    .palabras-error li {
+        margin: 8px;
+        font-size: 18px;
+    }
+</style>
+```
+
+</head>
+
+<body>
+
+```
+<div class="contenedor">
+
+    <!-- PANTALLA INICIAL -->
+
+    <div id="inicio">
+
+        <h1>📚 Spelling Study</h1>
+
+        <h2>¡Bienvenido!</h2>
+
+        <p>Practica tus palabras de spelling de una manera fácil.</p>
+
+        <input
+            id="nombre"
+            type="text"
+            placeholder="Escribe tu nombre"
+        >
+
+        <br>
+
+        <label>
+            📚 Lección:
+        </label>
+
+        <select id="leccion">
+
+            <option value="1">
+                Lección 1
+            </option>
+
+        </select>
+
+        <br>
+
+        <label>
+            ⏱️ Delay:
+        </label>
+
+        <select id="delay">
+
+            <option value="0">
+                0 segundos
+            </option>
+
+            <option value="1">
+                1 segundo
+            </option>
+
+            <option value="2" selected>
+                2 segundos
+            </option>
+
+            <option value="3">
+                3 segundos
+            </option>
+
+            <option value="5">
+                5 segundos
+            </option>
+
+        </select>
+
+        <br>
+
+        <button
+            class="principal"
+            onclick="comenzar()"
+        >
+            🚀 Comenzar
+        </button>
+
+    </div>
+
+
+    <!-- EXAMEN -->
+
+    <div id="examen" class="oculto">
+
+        <h1>🔤 Spelling Study</h1>
+
+        <p
+            id="numeroPalabra"
+            class="palabra-numero"
+        ></p>
+
+        <h2>🎧 Escucha la palabra</h2>
+
+        <button onclick="escuchar()">
+            🔊 Escuchar
+        </button>
+
+        <br>
+
+        <input
+            id="respuesta"
+            type="text"
+            placeholder="Escribe la palabra"
+            autocomplete="off"
+            onkeydown="teclaEnter(event)"
+        >
+
+        <br>
+
+        <button
+            class="principal"
+            onclick="comprobar()"
+        >
+            ✅ Comprobar
+        </button>
+
+        <p id="mensaje"></p>
+
+    </div>
+
+
+    <!-- RESULTADOS -->
+
+    <div id="resultados" class="oculto">
+
+        <h1>🏆 Resultados</h1>
+
+        <h2 id="nombreResultado"></h2>
+
+        <p id="resultadoTexto"></p>
+
+        <div
+            id="palabrasError"
+            class="palabras-error"
+        ></div>
+
+        <button
+            class="principal"
+            onclick="location.reload()"
+        >
+            🔁 Volver a estudiar
+        </button>
+
+    </div>
+
+</div>
+
+
+<script>
+
+    // ==========================
+    // PALABRAS DE LA LECCIÓN 1
+    // ==========================
+
+    const lecciones = {
+
+        1: [
+            "completely",
+            "fierce",
+            "doesn't",
+            "lieutenant",
+            "thirtieth"
+        ]
+
+    };
+
+
+    // ==========================
+    // VARIABLES
+    // ==========================
+
+    let palabras = [];
+
+    let posicion = 0;
+
+    let correctas = 0;
+
+    let incorrectas = 0;
+
+    let errores = [];
+
+    let nombreEstudiante = "";
+
+    let delaySegundos = 2;
+
+
+    // ==========================
+    // COMENZAR
+    // ==========================
+
+    function comenzar() {
+
+        nombreEstudiante =
+            document.getElementById("nombre").value.trim();
+
+        if (nombreEstudiante === "") {
+
+            nombreEstudiante = "Estudiante";
+
+        }
+
+
+        const numeroLeccion =
+            document.getElementById("leccion").value;
+
+
+        delaySegundos =
+            Number(
+                document.getElementById("delay").value
+            );
+
+
+        palabras =
+            [...lecciones[numeroLeccion]];
+
+
+        // Mezclar palabras
+
+        palabras.sort(
+            () => Math.random() - 0.5
+        );
+
+
+        posicion = 0;
+
+        correctas = 0;
+
+        incorrectas = 0;
+
+        errores = [];
+
+
+        // Cambiar pantalla
+
+        document
+            .getElementById("inicio")
+            .classList
+            .add("oculto");
+
+
+        document
+            .getElementById("examen")
+            .classList
+            .remove("oculto");
+
+
+        mostrarPalabra();
+
+    }
+
+
+    // ==========================
+    // MOSTRAR PALABRA
+    // ==========================
+
+    function mostrarPalabra() {
+
+        document
+            .getElementById("mensaje")
+            .textContent = "";
+
+
+        document
+            .getElementById("respuesta")
+            .value = "";
+
+
+        document
+            .getElementById("respuesta")
+            .focus();
+
+
+        document
+            .getElementById("numeroPalabra")
+            .textContent =
+            "Palabra " +
+            (posicion + 1) +
+            " de " +
+            palabras.length;
+
+
+        // Esperar el delay
+
+        setTimeout(
+            escuchar,
+            delaySegundos * 1000
+        );
+
+    }
+
+
+    // ==========================
+    // VOZ
+    // ==========================
+
+    function escuchar() {
+
+        if (posicion >= palabras.length) {
+            return;
+        }
+
+
+        const palabra =
+            palabras[posicion];
+
+
+        window.speechSynthesis.cancel();
+
+
+        const voz =
+            new SpeechSynthesisUtterance(
+                palabra
+            );
+
+
+        voz.lang = "en-US";
+
+        voz.rate = 0.8;
+
+        voz.pitch = 1;
+
+
+        window.speechSynthesis.speak(voz);
+
+    }
+
+
+    // ==========================
+    // COMPROBAR
+    // ==========================
+
+    function comprobar() {
+
+        const respuesta =
+            document
+            .getElementById("respuesta")
+            .value
+            .trim()
+            .toLowerCase();
+
+
+        const correcta =
+            palabras[posicion]
+            .toLowerCase();
+
+
+        const mensaje =
+            document.getElementById("mensaje");
+
+
+        if (respuesta === "") {
+
+            mensaje.textContent =
+                "✏️ Escribe una respuesta primero.";
+
+            mensaje.className =
+                "incorrecto";
+
+            return;
+
+        }
+
+
+        if (respuesta === correcta) {
+
+            correctas++;
+
+
+            mensaje.textContent =
+                "✅ ¡CORRECTO! 🎉";
+
+            mensaje.className =
+                "correcto";
+
+        }
+
+        else {
+
+            incorrectas++;
+
+            errores.push(
+                palabras[posicion]
+            );
+
+
+            mensaje.textContent =
+                "❌ Incorrecto. La palabra era: " +
+                palabras[posicion];
+
+            mensaje.className =
+                "incorrecto";
+
+        }
+
+
+        posicion++;
+
+
+        setTimeout(
+
+            function () {
+
+                if (
+                    posicion >=
+                    palabras.length
+                ) {
+
+                    mostrarResultados();
+
+                }
+
+                else {
+
+                    mostrarPalabra();
+
+                }
+
+            },
+
+            1200
+
+        );
+
+    }
+
+
+    // ==========================
+    // ENTER
+    // ==========================
+
+    function teclaEnter(event) {
+
+        if (event.key === "Enter") {
+
+            comprobar();
+
+        }
+
+    }
+
+
+    // ==========================
+    // RESULTADOS
+    // ==========================
+
+    function mostrarResultados() {
+
+        document
+            .getElementById("examen")
+            .classList
+            .add("oculto");
+
+
+        document
+            .getElementById("resultados")
+            .classList
+            .remove("oculto");
+
+
+        const total =
+            palabras.length;
+
+
+        const porcentaje =
+            Math.round(
+                (correctas / total) * 100
+            );
+
+
+        document
+            .getElementById("nombreResultado")
+            .textContent =
+            "👤 " +
+            nombreEstudiante;
+
+
+        document
+            .getElementById("resultadoTexto")
+            .innerHTML =
+            "🔤 Palabras: " +
+            total +
+            "<br><br>" +
+
+            "✅ Correctas: " +
+            correctas +
+            "<br>" +
+
+            "❌ Incorrectas: " +
+            incorrectas +
+            "<br><br>" +
+
+            "⭐ Calificación: " +
+            porcentaje +
+            "%";
+
+
+        const erroresDiv =
+            document.getElementById(
+                "palabrasError"
+            );
+
+
+        if (errores.length === 0) {
+
+            erroresDiv.innerHTML =
+                "<h3>🎉 ¡Perfecto!</h3>" +
+                "<p>No tuviste ningún error.</p>";
+
+        }
+
+        else {
+
+            let lista =
+                "<h3>📝 Palabras para practicar</h3>";
+
+            lista += "<ul>";
+
+
+            errores.forEach(
+
+                function (palabra) {
+
+                    lista +=
+                        "<li>❌ " +
+                        palabra +
+                        "</li>";
+
+                }
+
+            );
+
+
+            lista += "</ul>";
+
+            erroresDiv.innerHTML =
+                lista;
+
+        }
+
+    }
+
+</script>
+```
+
+</body>
+
+</html>

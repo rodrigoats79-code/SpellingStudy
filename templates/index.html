@@ -1,196 +1,359 @@
 <!DOCTYPE html>
-
 <html lang="es">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Spelling Study</title>
+    <title>Spelling Study</title>
 
-<style>
-    body {
-        font-family: Arial, sans-serif;
-        background: #f2f4f8;
-        text-align: center;
-        margin: 0;
-        padding: 40px 20px;
-    }
+    <style>
+        * {
+            box-sizing: border-box;
+        }
 
-    .contenedor {
-        max-width: 700px;
-        margin: auto;
-        background: white;
-        padding: 35px;
-        border-radius: 20px;
-        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
-    }
+        body {
+            font-family: Arial, sans-serif;
+            background: #f2f4f8;
+            margin: 0;
+            padding: 30px 15px;
+            color: #222;
+        }
 
-    h1 {
-        font-size: 42px;
-        margin-bottom: 10px;
-    }
+        .contenedor {
+            max-width: 1000px;
+            margin: auto;
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+        }
 
-    h2 {
-        margin-top: 10px;
-    }
+        h1 {
+            font-size: 42px;
+            margin-bottom: 10px;
+        }
 
-    input {
-        width: 80%;
-        padding: 14px;
-        font-size: 18px;
-        border-radius: 10px;
-        border: 1px solid #bbb;
-        margin: 10px;
-    }
+        h2 {
+            margin-top: 10px;
+        }
 
-    select {
-        padding: 12px;
-        font-size: 17px;
-        border-radius: 10px;
-        margin: 10px;
-    }
+        input {
+            width: min(80%, 600px);
+            padding: 14px;
+            font-size: 18px;
+            border-radius: 10px;
+            border: 1px solid #bbb;
+            margin: 10px;
+        }
 
-    button {
-        padding: 13px 22px;
-        font-size: 17px;
-        border: none;
-        border-radius: 10px;
-        cursor: pointer;
-        margin: 7px;
-    }
+        select {
+            padding: 12px;
+            font-size: 17px;
+            border-radius: 10px;
+            margin: 10px;
+            max-width: 90%;
+        }
 
-    .principal {
-        font-size: 20px;
-        padding: 16px 30px;
-    }
+        button {
+            padding: 13px 22px;
+            font-size: 17px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            margin: 7px;
+            background: #e7ebf2;
+        }
 
-    .palabra-numero {
-        font-size: 20px;
-        color: #666;
-    }
+        button:hover {
+            opacity: 0.9;
+        }
 
-    .resultado {
-        font-size: 25px;
-        font-weight: bold;
-        margin: 20px;
-    }
+        .principal {
+            font-size: 20px;
+            padding: 16px 30px;
+        }
 
-    .correcto {
-        color: green;
-    }
+        .botones-menu {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin: 25px 0;
+        }
 
-    .incorrecto {
-        color: red;
-    }
+        .boton-menu {
+            min-width: 220px;
+            font-size: 21px;
+            background: #eef2ff;
+            padding: 20px;
+        }
 
-    .oculto {
-        display: none;
-    }
+        .palabra-numero {
+            font-size: 20px;
+            color: #666;
+        }
 
-    .palabras-error {
-        background: #fff3f3;
-        padding: 15px;
-        border-radius: 12px;
-        margin-top: 20px;
-    }
+        .correcto {
+            color: green;
+            font-weight: bold;
+        }
 
-    .palabras-error ul {
-        list-style: none;
-        padding: 0;
-    }
+        .incorrecto {
+            color: red;
+            font-weight: bold;
+        }
 
-    .palabras-error li {
-        margin: 8px;
-        font-size: 18px;
-    }
-</style>
-```
+        .oculto {
+            display: none;
+        }
 
+        .tarjeta {
+            background: #f8f9fc;
+            padding: 20px;
+            border-radius: 15px;
+            margin-top: 20px;
+        }
+
+        .palabras-error {
+            background: #fff3f3;
+            padding: 15px;
+            border-radius: 12px;
+            margin-top: 20px;
+        }
+
+        .palabras-error ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .palabras-error li {
+            margin: 8px;
+            font-size: 18px;
+        }
+
+        .tabla-contenedor {
+            overflow-x: auto;
+            margin-top: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 750px;
+            background: white;
+        }
+
+        th,
+        td {
+            border: 1px solid #d6d9df;
+            padding: 13px;
+            text-align: center;
+        }
+
+        th {
+            background: #eef2ff;
+            font-size: 17px;
+        }
+
+        td {
+            font-size: 17px;
+        }
+
+        .grupo-titulo {
+            margin-top: 35px;
+            background: #f0f3f8;
+            padding: 12px;
+            border-radius: 10px;
+        }
+
+        .grammar-tabla {
+            margin-top: 20px;
+        }
+
+        .grammar-input {
+            width: 95%;
+            margin: 0;
+            padding: 10px;
+            font-size: 16px;
+        }
+
+        .pista {
+            font-weight: bold;
+            font-size: 18px;
+        }
+
+        .celda-pista {
+            background: #eef2ff;
+        }
+
+        .grammar-forma {
+            font-size: 20px;
+            color: #666;
+        }
+
+        .grammar-feedback {
+            font-size: 21px;
+            margin: 15px;
+            min-height: 35px;
+        }
+
+        .grammar-numero {
+            font-size: 20px;
+            color: #666;
+        }
+
+        .grammar-resumen {
+            background: #f7f8fc;
+            padding: 20px;
+            border-radius: 15px;
+            margin-top: 20px;
+        }
+
+        @media (max-width: 600px) {
+
+            body {
+                padding: 15px 8px;
+            }
+
+            .contenedor {
+                padding: 20px 12px;
+            }
+
+            h1 {
+                font-size: 32px;
+            }
+
+            input {
+                width: 95%;
+            }
+        }
+    </style>
 </head>
+
 
 <body>
 
-```
 <div class="contenedor">
 
-    <!-- PANTALLA INICIAL -->
 
-    <div id="inicio">
+    <!-- ============================== -->
+    <!-- MENÚ PRINCIPAL                 -->
+    <!-- ============================== -->
+
+    <div id="menuPrincipal">
 
         <h1>📚 Spelling Study</h1>
 
         <h2>¡Bienvenido!</h2>
 
-        <p>Practica tus palabras de spelling de una manera fácil.</p>
+        <p>Practica Spelling e Irregular Verbs.</p>
 
-        <input
-            id="nombre"
-            type="text"
-            placeholder="Escribe tu nombre"
-        >
+        <div class="botones-menu">
 
-        <br>
+            <button
+                class="boton-menu"
+                onclick="mostrarSeccion('spellingInicio')"
+            >
+                🔤 Spelling
+            </button>
 
-        <label>
-            📚 Lección:
-        </label>
+            <button
+                class="boton-menu"
+                onclick="mostrarSeccion('grammarInicio')"
+            >
+                📖 Grammar
+            </button>
 
-        <select id="leccion">
-
-            <option value="1">
-                Lección 1
-            </option>
-
-        </select>
-
-        <br>
-
-        <label>
-            ⏱️ Delay:
-        </label>
-
-        <select id="delay">
-
-            <option value="0">
-                0 segundos
-            </option>
-
-            <option value="1">
-                1 segundo
-            </option>
-
-            <option value="2" selected>
-                2 segundos
-            </option>
-
-            <option value="3">
-                3 segundos
-            </option>
-
-            <option value="5">
-                5 segundos
-            </option>
-
-        </select>
-
-        <br>
-
-        <button
-            class="principal"
-            onclick="comenzar()"
-        >
-            🚀 Comenzar
-        </button>
+        </div>
 
     </div>
 
 
-    <!-- EXAMEN -->
+    <!-- ============================== -->
+    <!-- SPELLING INICIO                -->
+    <!-- ============================== -->
 
-    <div id="examen" class="oculto">
+    <div id="spellingInicio" class="oculto">
+
+        <h1>🔤 Spelling</h1>
+
+        <button onclick="mostrarSeccion('menuPrincipal')">
+            ⬅️ Menú principal
+        </button>
+
+        <div class="tarjeta">
+
+            <h2>Configura tu práctica</h2>
+
+            <input
+                id="nombre"
+                type="text"
+                placeholder="Escribe tu nombre"
+            >
+
+            <br>
+
+            <label>
+                📚 Lección:
+            </label>
+
+            <select id="leccion">
+
+                <option value="1">Lección 1</option>
+                <option value="2">Lección 2</option>
+                <option value="3">Lección 3</option>
+                <option value="4">Lección 4</option>
+                <option value="5">Lección 5</option>
+                <option value="6">Lección 6</option>
+                <option value="7">Lección 7</option>
+                <option value="8">Lección 8</option>
+                <option value="9">Lección 9</option>
+                <option value="10">Lección 10</option>
+
+            </select>
+
+            <br>
+
+            <label>
+                ⏱️ Delay:
+            </label>
+
+            <select id="delay">
+
+                <option value="0">0 segundos</option>
+                <option value="1">1 segundo</option>
+                <option value="2" selected>2 segundos</option>
+                <option value="3">3 segundos</option>
+                <option value="5">5 segundos</option>
+
+            </select>
+
+            <br>
+
+            <button
+                class="principal"
+                onclick="comenzarSpelling()"
+            >
+                🚀 Comenzar Spelling
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <!-- ============================== -->
+    <!-- SPELLING EXAMEN                -->
+    <!-- ============================== -->
+
+    <div id="spellingExamen" class="oculto">
 
         <h1>🔤 Spelling Study</h1>
+
+        <button onclick="volverSpelling()">
+            ⬅️ Volver
+        </button>
 
         <p
             id="numeroPalabra"
@@ -199,7 +362,7 @@
 
         <h2>🎧 Escucha la palabra</h2>
 
-        <button onclick="escuchar()">
+        <button onclick="escucharSpelling()">
             🔊 Escuchar
         </button>
 
@@ -210,26 +373,28 @@
             type="text"
             placeholder="Escribe la palabra"
             autocomplete="off"
-            onkeydown="teclaEnter(event)"
+            onkeydown="teclaEnterSpelling(event)"
         >
 
         <br>
 
         <button
             class="principal"
-            onclick="comprobar()"
+            onclick="comprobarSpelling()"
         >
             ✅ Comprobar
         </button>
 
-        <p id="mensaje"></p>
+        <p id="mensajeSpelling"></p>
 
     </div>
 
 
-    <!-- RESULTADOS -->
+    <!-- ============================== -->
+    <!-- SPELLING RESULTADOS            -->
+    <!-- ============================== -->
 
-    <div id="resultados" class="oculto">
+    <div id="spellingResultados" class="oculto">
 
         <h1>🏆 Resultados</h1>
 
@@ -244,133 +409,596 @@
 
         <button
             class="principal"
-            onclick="location.reload()"
+            onclick="volverSpelling()"
         >
             🔁 Volver a estudiar
         </button>
 
     </div>
 
+
+    <!-- ============================== -->
+    <!-- GRAMMAR INICIO                 -->
+    <!-- ============================== -->
+
+    <div id="grammarInicio" class="oculto">
+
+        <h1>📖 Grammar</h1>
+
+        <button onclick="mostrarSeccion('menuPrincipal')">
+            ⬅️ Menú principal
+        </button>
+
+        <div class="tarjeta">
+
+            <h2>Irregular Verbs</h2>
+
+            <p>
+                Mira las tablas o empieza una práctica.
+            </p>
+
+            <label>
+                📚 Grupo:
+            </label>
+
+            <select
+                id="grammarGroup"
+                onchange="mostrarTablaGrammar()"
+            >
+
+                <option value="1">Group 1</option>
+                <option value="2">Group 2</option>
+                <option value="3">Group 3</option>
+                <option value="4">Group 4</option>
+                <option value="5">Group 5</option>
+                <option value="6">Group 6</option>
+                <option value="7">Group 7</option>
+                <option value="8">Group 8</option>
+                <option value="9">Group 9</option>
+                <option value="10">Group 10</option>
+                <option value="11">Group 11</option>
+                <option value="12">Group 12</option>
+                <option value="13">Group 13</option>
+                <option value="14">Group 14</option>
+                <option value="15">Group 15</option>
+                <option value="all">Todos los grupos</option>
+
+            </select>
+
+            <br>
+
+            <button onclick="mostrarTablaGrammar()">
+                📋 Ver tabla
+            </button>
+
+            <br>
+
+            <button
+                class="principal"
+                onclick="comenzarGrammar()"
+            >
+                🎲 Empezar práctica
+            </button>
+
+        </div>
+
+        <div id="tablaGrammar"></div>
+
+    </div>
+
+
+    <!-- ============================== -->
+    <!-- GRAMMAR EXAMEN                 -->
+    <!-- ============================== -->
+
+    <div id="grammarExamen" class="oculto">
+
+        <h1>📖 Grammar</h1>
+
+        <button onclick="volverGrammar()">
+            ⬅️ Volver
+        </button>
+
+        <p
+            id="grammarNumero"
+            class="grammar-numero"
+        ></p>
+
+        <p
+            id="grammarForma"
+            class="grammar-forma"
+        ></p>
+
+        <div
+            id="tablaPreguntaGrammar"
+            class="grammar-tabla"
+        ></div>
+
+        <button onclick="escucharGrammar()">
+            🔊 Escuchar pista
+        </button>
+
+        <br>
+
+        <button
+            class="principal"
+            onclick="comprobarGrammar()"
+        >
+            ✅ Comprobar tabla
+        </button>
+
+        <p
+            id="grammarFeedback"
+            class="grammar-feedback"
+        ></p>
+
+    </div>
+
+
+    <!-- ============================== -->
+    <!-- GRAMMAR RESULTADOS             -->
+    <!-- ============================== -->
+
+    <div id="grammarResultados" class="oculto">
+
+        <h1>🏆 Grammar</h1>
+
+        <div
+            id="grammarResumen"
+            class="grammar-resumen"
+        ></div>
+
+        <button
+            class="principal"
+            onclick="volverGrammar()"
+        >
+            🔁 Practicar otra vez
+        </button>
+
+    </div>
+
+
 </div>
 
 
 <script>
 
-    // ==========================
-    // PALABRAS DE LA LECCIÓN 1
-    // ==========================
+
+    // ==========================================
+    // SPELLING
+    // ==========================================
 
     const lecciones = {
 
         1: [
             "completely",
-            "fierce",
+            "believe",
+            "weirdest",
+            "beige",
+            "through",
+            "thirtieth",
+            "experiment",
+            "perfume",
             "doesn't",
+            "decision",
+            "politely",
+            "fierce",
+            "briefcase",
+            "sleigh",
             "lieutenant",
-            "thirtieth"
+            "maneuver",
+            "recruit",
+            "biscuit",
+            "gauge",
+            "preserve"
+        ],
+
+        2: [
+            "penguin",
+            "language",
+            "parachute",
+            "Michigan",
+            "examination",
+            "executive",
+            "exhibit",
+            "exhausted",
+            "whirlpool",
+            "meanwhile",
+            "distinguished",
+            "guacamole",
+            "extinguish",
+            "brochure",
+            "chauffeur",
+            "chandelier",
+            "exempt",
+            "exotic",
+            "exertion",
+            "overwhelming"
+        ],
+
+        3: [
+            "recommend",
+            "different",
+            "graffiti",
+            "successfully",
+            "embarrass",
+            "necessary",
+            "parallel",
+            "Halloween",
+            "Connecticut",
+            "approximately",
+            "commitment",
+            "accommodate",
+            "accomplishment",
+            "possession",
+            "harass",
+            "confetti",
+            "abbreviation",
+            "interruption",
+            "cinnamon",
+            "mayonnaise"
+        ],
+
+        4: [
+            "herd",
+            "heard",
+            "capital",
+            "capitol",
+            "principle",
+            "principal",
+            "there",
+            "their",
+            "straight",
+            "strait",
+            "compliment",
+            "complement",
+            "stationery",
+            "stationary",
+            "idle",
+            "idol",
+            "hostel",
+            "hostile",
+            "sheer",
+            "shear"
+        ],
+
+        5: [
+            "traveled",
+            "traveling",
+            "received",
+            "receiving",
+            "panicked",
+            "panicking",
+            "qualified",
+            "qualifying",
+            "controlled",
+            "controlling",
+            "researched",
+            "researching",
+            "argued",
+            "arguing",
+            "mimicked",
+            "mimicking",
+            "horrified",
+            "horrifying",
+            "committed",
+            "committing"
+        ],
+
+        6: [
+            "mathematics",
+            "really",
+            "audience",
+            "usually",
+            "diamond",
+            "favorite",
+            "memory",
+            "restaurant",
+            "recognize",
+            "disgusted",
+            "secretary",
+            "miniature",
+            "tournament",
+            "vacuum",
+            "Delaware",
+            "gratitude",
+            "elementary",
+            "juvenile",
+            "victim",
+            "category"
+        ],
+
+        7: [
+            "crime",
+            "criminal",
+            "except",
+            "exception",
+            "combine",
+            "combination",
+            "imitate",
+            "imitation",
+            "operate",
+            "operation",
+            "academy",
+            "academic",
+            "depart",
+            "departure",
+            "inspire",
+            "inspiration",
+            "participate",
+            "participation",
+            "regulate",
+            "regulation"
+        ],
+
+        8: [
+            "safety",
+            "loyalty",
+            "society",
+            "security",
+            "personality",
+            "university",
+            "authority",
+            "recognition",
+            "description",
+            "introduction",
+            "certainty",
+            "specialty",
+            "cruelty",
+            "publicity",
+            "electricity",
+            "reality",
+            "subscription",
+            "retention",
+            "intention",
+            "reduction"
+        ],
+
+        9: [
+            "handcuffs",
+            "chefs",
+            "zeros",
+            "torpedoes",
+            "yourselves",
+            "bookshelves",
+            "brothers-in-law",
+            "series",
+            "bacteria",
+            "media",
+            "portfolios",
+            "avocados",
+            "cargoes",
+            "mottoes",
+            "calves",
+            "great-uncles",
+            "aircraft",
+            "alumni",
+            "data",
+            "oases"
+        ],
+
+        10: [
+            "niece's",
+            "nieces'",
+            "nieces",
+            "country's",
+            "countries'",
+            "countries",
+            "salesman's",
+            "salesmen's",
+            "its",
+            "ours",
+            "Mr. Murphy's",
+            "Murphys",
+            "witness's",
+            "witnesses'",
+            "witnesses",
+            "secretary's",
+            "secretaries'",
+            "secretaries",
+            "theirs",
+            "hers"
         ]
 
     };
 
 
-    // ==========================
-    // VARIABLES
-    // ==========================
-
-    let palabras = [];
-
-    let posicion = 0;
-
-    let correctas = 0;
-
-    let incorrectas = 0;
-
-    let errores = [];
-
+    let palabrasSpelling = [];
+    let posicionSpelling = 0;
+    let correctasSpelling = 0;
+    let incorrectasSpelling = 0;
+    let erroresSpelling = [];
     let nombreEstudiante = "";
-
     let delaySegundos = 2;
 
+    let timerSpelling = null;
+    let timerGrammar = null;
 
-    // ==========================
-    // COMENZAR
-    // ==========================
 
-    function comenzar() {
+    // ==========================================
+    // FUNCIÓN RANDOM
+    // ==========================================
+
+    function mezclar(array) {
+
+        const copia = [...array];
+
+        for (
+            let i = copia.length - 1;
+            i > 0;
+            i--
+        ) {
+
+            const j =
+                Math.floor(
+                    Math.random() * (i + 1)
+                );
+
+            [
+                copia[i],
+                copia[j]
+            ] = [
+                copia[j],
+                copia[i]
+            ];
+        }
+
+        return copia;
+    }
+
+
+    // ==========================================
+    // NAVEGACIÓN
+    // ==========================================
+
+    function ocultarTodo() {
+
+        const ids = [
+            "menuPrincipal",
+            "spellingInicio",
+            "spellingExamen",
+            "spellingResultados",
+            "grammarInicio",
+            "grammarExamen",
+            "grammarResultados"
+        ];
+
+        ids.forEach(function(id) {
+
+            document
+                .getElementById(id)
+                .classList
+                .add("oculto");
+
+        });
+    }
+
+
+    function mostrarSeccion(id) {
+
+        window.speechSynthesis.cancel();
+
+        clearTimeout(timerSpelling);
+        clearTimeout(timerGrammar);
+
+        ocultarTodo();
+
+        document
+            .getElementById(id)
+            .classList
+            .remove("oculto");
+    }
+
+
+    // ==========================================
+    // VOZ
+    // ==========================================
+
+    function hablar(texto, velocidad = 0.8) {
+
+        window.speechSynthesis.cancel();
+
+        const voz =
+            new SpeechSynthesisUtterance(texto);
+
+        voz.lang = "en-US";
+        voz.rate = velocidad;
+        voz.pitch = 1;
+
+        const voces =
+            window.speechSynthesis.getVoices();
+
+        const vozUS =
+            voces.find(function(v) {
+
+                return v.lang === "en-US";
+
+            });
+
+        if (vozUS) {
+            voz.voice = vozUS;
+        }
+
+        window.speechSynthesis.speak(voz);
+    }
+
+
+    // ==========================================
+    // SPELLING - COMENZAR
+    // ==========================================
+
+    function comenzarSpelling() {
 
         nombreEstudiante =
-            document.getElementById("nombre").value.trim();
+            document
+                .getElementById("nombre")
+                .value
+                .trim();
 
         if (nombreEstudiante === "") {
-
             nombreEstudiante = "Estudiante";
-
         }
 
 
         const numeroLeccion =
-            document.getElementById("leccion").value;
+            document
+                .getElementById("leccion")
+                .value;
 
 
         delaySegundos =
             Number(
-                document.getElementById("delay").value
+                document
+                    .getElementById("delay")
+                    .value
             );
 
 
-        palabras =
-            [...lecciones[numeroLeccion]];
+        palabrasSpelling =
+            mezclar(
+                lecciones[numeroLeccion]
+            );
 
 
-        // Mezclar palabras
+        posicionSpelling = 0;
+        correctasSpelling = 0;
+        incorrectasSpelling = 0;
+        erroresSpelling = [];
 
-        palabras.sort(
-            () => Math.random() - 0.5
+
+        mostrarSeccion(
+            "spellingExamen"
         );
 
 
-        posicion = 0;
-
-        correctas = 0;
-
-        incorrectas = 0;
-
-        errores = [];
-
-
-        // Cambiar pantalla
-
-        document
-            .getElementById("inicio")
-            .classList
-            .add("oculto");
-
-
-        document
-            .getElementById("examen")
-            .classList
-            .remove("oculto");
-
-
-        mostrarPalabra();
-
+        mostrarPalabraSpelling();
     }
 
 
-    // ==========================
-    // MOSTRAR PALABRA
-    // ==========================
+    function mostrarPalabraSpelling() {
 
-    function mostrarPalabra() {
-
-        document
-            .getElementById("mensaje")
-            .textContent = "";
-
+        clearTimeout(timerSpelling);
 
         document
             .getElementById("respuesta")
             .value = "";
+
+        document
+            .getElementById("mensajeSpelling")
+            .textContent = "";
+
+        document
+            .getElementById("mensajeSpelling")
+            .className = "";
+
+
+        document
+            .getElementById("numeroPalabra")
+            .textContent =
+            "Palabra " +
+            (posicionSpelling + 1) +
+            " de " +
+            palabrasSpelling.length;
 
 
         document
@@ -378,82 +1006,49 @@
             .focus();
 
 
-        document
-            .getElementById("numeroPalabra")
-            .textContent =
-            "Palabra " +
-            (posicion + 1) +
-            " de " +
-            palabras.length;
-
-
-        // Esperar el delay
-
-        setTimeout(
-            escuchar,
-            delaySegundos * 1000
-        );
-
+        timerSpelling =
+            setTimeout(
+                escucharSpelling,
+                delaySegundos * 1000
+            );
     }
 
 
-    // ==========================
-    // VOZ
-    // ==========================
+    function escucharSpelling() {
 
-    function escuchar() {
+        if (
+            posicionSpelling >=
+            palabrasSpelling.length
+        ) {
 
-        if (posicion >= palabras.length) {
             return;
         }
 
-
-        const palabra =
-            palabras[posicion];
-
-
-        window.speechSynthesis.cancel();
-
-
-        const voz =
-            new SpeechSynthesisUtterance(
-                palabra
-            );
-
-
-        voz.lang = "en-US";
-
-        voz.rate = 0.8;
-
-        voz.pitch = 1;
-
-
-        window.speechSynthesis.speak(voz);
-
+        hablar(
+            palabrasSpelling[posicionSpelling],
+            0.8
+        );
     }
 
 
-    // ==========================
-    // COMPROBAR
-    // ==========================
-
-    function comprobar() {
+    function comprobarSpelling() {
 
         const respuesta =
             document
-            .getElementById("respuesta")
-            .value
-            .trim()
-            .toLowerCase();
+                .getElementById("respuesta")
+                .value
+                .trim()
+                .toLowerCase();
 
 
         const correcta =
-            palabras[posicion]
-            .toLowerCase();
+            palabrasSpelling[posicionSpelling]
+                .toLowerCase();
 
 
         const mensaje =
-            document.getElementById("mensaje");
+            document
+                .getElementById("mensajeSpelling");
 
 
         if (respuesta === "") {
@@ -465,14 +1060,12 @@
                 "incorrecto";
 
             return;
-
         }
 
 
         if (respuesta === correcta) {
 
-            correctas++;
-
+            correctasSpelling++;
 
             mensaje.textContent =
                 "✅ ¡CORRECTO! 🎉";
@@ -480,98 +1073,69 @@
             mensaje.className =
                 "correcto";
 
-        }
+        } else {
 
-        else {
+            incorrectasSpelling++;
 
-            incorrectas++;
-
-            errores.push(
-                palabras[posicion]
+            erroresSpelling.push(
+                palabrasSpelling[posicionSpelling]
             );
-
 
             mensaje.textContent =
                 "❌ Incorrecto. La palabra era: " +
-                palabras[posicion];
+                palabrasSpelling[posicionSpelling];
 
             mensaje.className =
                 "incorrecto";
-
         }
 
 
-        posicion++;
+        posicionSpelling++;
 
 
-        setTimeout(
+        timerSpelling =
+            setTimeout(
+                function() {
 
-            function () {
+                    if (
+                        posicionSpelling >=
+                        palabrasSpelling.length
+                    ) {
 
-                if (
-                    posicion >=
-                    palabras.length
-                ) {
+                        mostrarResultadosSpelling();
 
-                    mostrarResultados();
+                    } else {
 
-                }
+                        mostrarPalabraSpelling();
 
-                else {
+                    }
 
-                    mostrarPalabra();
-
-                }
-
-            },
-
-            1200
-
-        );
-
+                },
+                1200
+            );
     }
 
 
-    // ==========================
-    // ENTER
-    // ==========================
-
-    function teclaEnter(event) {
+    function teclaEnterSpelling(event) {
 
         if (event.key === "Enter") {
-
-            comprobar();
-
+            comprobarSpelling();
         }
-
     }
 
 
-    // ==========================
-    // RESULTADOS
-    // ==========================
-
-    function mostrarResultados() {
-
-        document
-            .getElementById("examen")
-            .classList
-            .add("oculto");
-
-
-        document
-            .getElementById("resultados")
-            .classList
-            .remove("oculto");
-
+    function mostrarResultadosSpelling() {
 
         const total =
-            palabras.length;
+            palabrasSpelling.length;
 
 
         const porcentaje =
             Math.round(
-                (correctas / total) * 100
+                (
+                    correctasSpelling /
+                    total
+                ) * 100
             );
 
 
@@ -585,16 +1149,20 @@
         document
             .getElementById("resultadoTexto")
             .innerHTML =
+
             "🔤 Palabras: " +
             total +
+
             "<br><br>" +
 
             "✅ Correctas: " +
-            correctas +
+            correctasSpelling +
+
             "<br>" +
 
             "❌ Incorrectas: " +
-            incorrectas +
+            incorrectasSpelling +
+
             "<br><br>" +
 
             "⭐ Calificación: " +
@@ -602,54 +1170,1114 @@
             "%";
 
 
-        const erroresDiv =
+        const errores =
             document.getElementById(
                 "palabrasError"
             );
 
 
-        if (errores.length === 0) {
+        if (erroresSpelling.length === 0) {
 
-            erroresDiv.innerHTML =
+            errores.innerHTML =
                 "<h3>🎉 ¡Perfecto!</h3>" +
                 "<p>No tuviste ningún error.</p>";
 
-        }
+        } else {
 
-        else {
-
-            let lista =
+            let html =
                 "<h3>📝 Palabras para practicar</h3>";
 
-            lista += "<ul>";
+            html += "<ul>";
 
+            erroresSpelling.forEach(
+                function(palabra) {
 
-            errores.forEach(
-
-                function (palabra) {
-
-                    lista +=
+                    html +=
                         "<li>❌ " +
                         palabra +
                         "</li>";
 
                 }
+            );
 
+            html += "</ul>";
+
+            errores.innerHTML =
+                html;
+        }
+
+
+        mostrarSeccion(
+            "spellingResultados"
+        );
+    }
+
+
+    function volverSpelling() {
+
+        window.speechSynthesis.cancel();
+
+        clearTimeout(timerSpelling);
+
+        mostrarSeccion(
+            "spellingInicio"
+        );
+    }
+
+
+    // ==========================================
+    // GRAMMAR DATA
+    // ==========================================
+
+    const grammarGroups = {
+
+        1: [
+            ["bring", "brought", "brought", "bringing"],
+            ["buy", "bought", "bought", "buying"],
+            ["catch", "caught", "caught", "catching"],
+            ["fight", "fought", "fought", "fighting"],
+            ["seek", "sought", "sought", "seeking"],
+            ["teach", "taught", "taught", "teaching"],
+            ["think", "thought", "thought", "thinking"]
+        ],
+
+        2: [
+            ["feed", "fed", "fed", "feeding"],
+            ["feel", "felt", "felt", "feeling"],
+            ["flee", "fled", "fled", "fleeing"],
+            ["keep", "kept", "kept", "keeping"],
+            ["lead", "led", "led", "leading"],
+            ["leave", "left", "left", "leaving"],
+            ["mean", "meant", "meant", "meaning"],
+            ["read", "read", "read", "reading"],
+            ["sleep", "slept", "slept", "sleeping"],
+            ["sweep", "swept", "swept", "sweeping"],
+            ["weep", "wept", "wept", "weeping"]
+        ],
+
+        3: [
+            ["bend", "bent", "bent", "bending"],
+            ["build", "built", "built", "building"],
+            ["lend", "lent", "lent", "lending"],
+            ["send", "sent", "sent", "sending"],
+            ["spend", "spent", "spent", "spending"]
+        ],
+
+        4: [
+            ["become", "became", "become", "becoming"],
+            ["choose", "chose", "chosen", "choosing"],
+            ["come", "came", "come", "coming"],
+            ["do", "did", "done", "doing"],
+            ["fall", "fell", "fallen", "falling"],
+            ["forget", "forgot", "forgotten", "forgetting"],
+            ["get", "got", "gotten", "getting"],
+            ["go", "went", "gone", "going"],
+            ["see", "saw", "seen", "seeing"]
+        ],
+
+        5: [
+            ["bind", "bound", "bound", "binding"],
+            ["find", "found", "found", "finding"],
+            ["grind", "ground", "ground", "grinding"],
+            ["wind", "wound", "wound", "winding"]
+        ],
+
+        6: [
+            ["lie", "lay", "lain", "lying"],
+            ["lay", "laid", "laid", "laying"],
+            ["pay", "paid", "paid", "paying"],
+            ["say", "said", "said", "saying"]
+        ],
+
+        7: [
+            ["hold", "held", "held", "holding"],
+            ["sell", "sold", "sold", "selling"],
+            ["tell", "told", "told", "telling"]
+        ],
+
+        8: [
+            ["break", "broke", "broken", "breaking"],
+            ["freeze", "froze", "frozen", "freezing"],
+            ["shake", "shook", "shaken", "shaking"],
+            ["speak", "spoke", "spoken", "speaking"],
+            ["steal", "stole", "stolen", "stealing"],
+            ["take", "took", "taken", "taking"],
+            ["wake", "woke", "woken", "waking"]
+        ],
+
+        9: [
+            ["blow", "blew", "blown", "blowing"],
+            ["draw", "drew", "drawn", "drawing"],
+            ["fly", "flew", "flown", "flying"],
+            ["grow", "grew", "grown", "growing"],
+            ["know", "knew", "known", "knowing"],
+            ["throw", "threw", "thrown", "throwing"],
+
+            /*
+                Verbo TO BE
+            */
+            ["am / is / are", "was / were", "been", "being"]
+        ],
+
+        10: [
+            ["bear", "bore", "borne", "bearing"],
+            ["swear", "swore", "sworn", "swearing"],
+            ["tear", "tore", "torn", "tearing"],
+            ["wear", "wore", "worn", "wearing"],
+            ["bite", "bit", "bitten", "biting"]
+        ],
+
+        11: [
+            ["drive", "drove", "driven", "driving"],
+            ["forbid", "forbade", "forbidden", "forbidding"],
+            ["forgive", "forgave", "forgiven", "forgiving"],
+            ["give", "gave", "given", "giving"],
+            ["hide", "hid", "hidden", "hiding"],
+            ["ride", "rode", "ridden", "riding"],
+            ["write", "wrote", "written", "writing"]
+        ],
+
+        12: [
+            ["begin", "began", "begun", "beginning"],
+            ["drink", "drank", "drunk", "drinking"],
+            ["ring", "rang", "rung", "ringing"],
+            ["shrink", "shrank", "shrunk", "shrinking"],
+            ["sing", "sang", "sung", "singing"],
+            ["sink", "sank", "sunk", "sinking"],
+            ["spring", "sprang", "sprung", "springing"],
+            ["swim", "swam", "swum", "swimming"],
+            ["swing", "swung", "swung", "swinging"],
+            ["run", "ran", "run", "running"]
+        ],
+
+        13: [
+            ["beat", "beat", "beaten", "beating"],
+            ["eat", "ate", "eaten", "eating"]
+        ],
+
+        14: [
+            ["bet", "bet", "bet", "betting"],
+            ["burst", "burst", "burst", "bursting"],
+            ["cost", "cost", "cost", "costing"],
+            ["cut", "cut", "cut", "cutting"],
+            ["fit", "fit", "fit", "fitting"],
+            ["hit", "hit", "hit", "hitting"],
+            ["hurt", "hurt", "hurt", "hurting"],
+            ["let", "let", "let", "letting"],
+            ["put", "put", "put", "putting"],
+            ["quit", "quit", "quit", "quitting"],
+            ["set", "set", "set", "setting"],
+            ["shed", "shed", "shed", "shedding"],
+            ["shut", "shut", "shut", "shutting"],
+            ["spit", "spit", "spit", "spitting"],
+            ["split", "split", "split", "splitting"],
+            ["spread", "spread", "spread", "spreading"],
+            ["wet", "wet", "wet", "wetting"]
+        ],
+
+        15: [
+            ["dig", "dug", "dug", "digging"],
+            ["dive", "dived / dove", "dived", "diving"],
+            ["hang", "hung", "hung", "hanging"],
+            ["have / has", "had", "had", "having"],
+            ["hear", "heard", "heard", "hearing"],
+            ["light", "lit / lighted", "lit / lighted", "lighting"],
+            ["lose", "lost", "lost", "losing"],
+            ["make", "made", "made", "making"],
+            ["shoot", "shot", "shot", "shooting"],
+            ["sit", "sat", "sat", "sitting"],
+            ["slide", "slid", "slid", "sliding"],
+            ["spin", "spun", "spun", "spinning"],
+            ["stand", "stood", "stood", "standing"],
+            ["stick", "stuck", "stuck", "sticking"],
+            ["sting", "stung", "stung", "stinging"],
+            ["strike", "struck", "struck / stricken", "striking"],
+            ["string", "strung", "strung", "stringing"],
+            ["understand", "understood", "understood", "understanding"],
+            ["win", "won", "won", "winning"]
+        ]
+
+    };
+
+
+    const nombresFormas = [
+        "Present",
+        "Past",
+        "Past Participle",
+        "Present Participle"
+    ];
+
+
+    // ==========================================
+    // GRAMMAR - MOSTRAR TABLAS
+    // ==========================================
+
+    function mostrarTablaGrammar() {
+
+        const seleccion =
+            document
+                .getElementById("grammarGroup")
+                .value;
+
+
+        const contenedor =
+            document
+                .getElementById("tablaGrammar");
+
+
+        let grupos = [];
+
+
+        if (seleccion === "all") {
+
+            for (
+                let numero = 1;
+                numero <= 15;
+                numero++
+            ) {
+
+                grupos.push({
+                    numero: numero,
+                    verbos: grammarGroups[numero]
+                });
+
+            }
+
+        } else {
+
+            const numero =
+                Number(seleccion);
+
+            grupos.push({
+                numero: numero,
+                verbos: grammarGroups[numero]
+            });
+        }
+
+
+        let html = "";
+
+
+        grupos.forEach(function(grupo) {
+
+            html +=
+                '<div class="grupo-titulo">' +
+                "<h2>📚 Group " +
+                grupo.numero +
+                "</h2>" +
+                "</div>";
+
+
+            html +=
+                '<div class="tabla-contenedor">';
+
+
+            html += "<table>";
+
+
+            html += "<thead>";
+
+            html += "<tr>";
+
+            nombresFormas.forEach(
+                function(nombre) {
+
+                    html +=
+                        "<th>" +
+                        nombre +
+                        "</th>";
+
+                }
+            );
+
+            html += "</tr>";
+
+            html += "</thead>";
+
+
+            html += "<tbody>";
+
+
+            grupo.verbos.forEach(
+                function(verbo) {
+
+                    html += "<tr>";
+
+
+                    verbo.forEach(
+                        function(forma) {
+
+                            html +=
+                                "<td>" +
+                                forma +
+                                "</td>";
+
+                        }
+                    );
+
+
+                    html += "</tr>";
+
+                }
             );
 
 
-            lista += "</ul>";
+            html += "</tbody>";
 
-            erroresDiv.innerHTML =
-                lista;
+            html += "</table>";
 
-        }
+            html += "</div>";
 
+        });
+
+
+        contenedor.innerHTML =
+            html;
     }
 
+
+    // ==========================================
+    // GRAMMAR - VARIABLES
+    // ==========================================
+
+    let grammarPreguntas = [];
+    let grammarPosicion = 0;
+    let grammarCorrectas = 0;
+    let grammarIncorrectas = 0;
+    let grammarActual = null;
+
+
+    // ==========================================
+    // GRAMMAR - COMPROBAR RESPUESTAS
+    // ==========================================
+
+    function normalizar(texto) {
+
+        return texto
+            .toLowerCase()
+            .trim()
+            .replace(/\s+/g, " ");
+    }
+
+
+    function esRespuestaCorrecta(
+        respuestaUsuario,
+        respuestaCorrecta
+    ) {
+
+        const usuario =
+            normalizar(
+                respuestaUsuario
+            );
+
+
+        const correcta =
+            normalizar(
+                respuestaCorrecta
+            );
+
+
+        /*
+            Algunas respuestas tienen
+            varias opciones separadas por /.
+
+            Ejemplo:
+            dived / dove
+
+            En esos casos aceptamos
+            cualquiera de las opciones.
+        */
+
+        const opciones =
+            correcta
+                .split("/")
+                .map(function(opcion) {
+                    return opcion.trim();
+                })
+                .filter(Boolean);
+
+
+        if (opciones.length > 1) {
+
+            /*
+                Caso especial:
+
+                am / is / are
+                was / were
+                have / has
+
+                En estas formas queremos
+                que escriban TODAS las opciones.
+            */
+
+            const formasObligatorias = [
+                "am / is / are",
+                "was / were",
+                "have / has"
+            ];
+
+
+            if (
+                formasObligatorias.includes(
+                    correcta
+                )
+            ) {
+
+                const usuarioFormateado =
+                    usuario
+                        .replace(/,/g, "/")
+                        .replace(/\s*\/\s*/g, "/");
+
+
+                const correctaFormateada =
+                    correcta
+                        .replace(/\s*\/\s*/g, "/");
+
+
+                return (
+                    usuarioFormateado ===
+                    correctaFormateada
+                );
+            }
+
+
+            /*
+                Para dived / dove, etc.,
+                cualquiera de las dos sirve.
+            */
+
+            return opciones.some(
+                function(opcion) {
+
+                    return usuario === opcion;
+
+                }
+            );
+        }
+
+
+        return usuario === correcta;
+    }
+
+
+    // ==========================================
+    // GRAMMAR - VERBOS SELECCIONADOS
+    // ==========================================
+
+    function obtenerVerbosSeleccionados() {
+
+        const seleccion =
+            document
+                .getElementById("grammarGroup")
+                .value;
+
+
+        let resultado = [];
+
+
+        if (seleccion === "all") {
+
+            for (
+                let grupo = 1;
+                grupo <= 15;
+                grupo++
+            ) {
+
+                grammarGroups[grupo]
+                    .forEach(
+                        function(verbo) {
+
+                            resultado.push({
+                                verbo: verbo,
+                                grupo: grupo
+                            });
+
+                        }
+                    );
+            }
+
+        } else {
+
+            const numeroGrupo =
+                Number(seleccion);
+
+
+            grammarGroups[numeroGrupo]
+                .forEach(
+                    function(verbo) {
+
+                        resultado.push({
+                            verbo: verbo,
+                            grupo: numeroGrupo
+                        });
+
+                    }
+                );
+        }
+
+
+        return resultado;
+    }
+
+
+    // ==========================================
+    // GRAMMAR - PREGUNTAS RANDOM
+    // ==========================================
+
+    function crearPreguntasGrammar() {
+
+        const verbos =
+            obtenerVerbosSeleccionados();
+
+
+        let preguntas = [];
+
+
+        verbos.forEach(
+            function(elemento) {
+
+                for (
+                    let forma = 0;
+                    forma < 4;
+                    forma++
+                ) {
+
+                    preguntas.push({
+
+                        verbo:
+                            elemento.verbo,
+
+                        grupo:
+                            elemento.grupo,
+
+                        forma:
+                            forma
+
+                    });
+                }
+            }
+        );
+
+
+        preguntas =
+            mezclar(
+                preguntas
+            );
+
+
+        /*
+            10 preguntas por práctica.
+        */
+
+        return preguntas.slice(
+            0,
+            10
+        );
+    }
+
+
+    // ==========================================
+    // GRAMMAR - COMENZAR
+    // ==========================================
+
+    function comenzarGrammar() {
+
+        grammarPreguntas =
+            crearPreguntasGrammar();
+
+
+        grammarPosicion = 0;
+        grammarCorrectas = 0;
+        grammarIncorrectas = 0;
+        grammarActual = null;
+
+
+        mostrarSeccion(
+            "grammarExamen"
+        );
+
+
+        mostrarPreguntaGrammar();
+    }
+
+
+    // ==========================================
+    // GRAMMAR - MOSTRAR TABLA DE PREGUNTA
+    // ==========================================
+
+    function mostrarPreguntaGrammar() {
+
+        clearTimeout(
+            timerGrammar
+        );
+
+
+        if (
+            grammarPosicion >=
+            grammarPreguntas.length
+        ) {
+
+            mostrarResultadosGrammar();
+
+            return;
+        }
+
+
+        grammarActual =
+            grammarPreguntas[
+                grammarPosicion
+            ];
+
+
+        const verbo =
+            grammarActual.verbo;
+
+
+        const formaMostrada =
+            grammarActual.forma;
+
+
+        document
+            .getElementById(
+                "grammarNumero"
+            )
+            .textContent =
+            "Pregunta " +
+            (grammarPosicion + 1) +
+            " de " +
+            grammarPreguntas.length;
+
+
+        document
+            .getElementById(
+                "grammarForma"
+            )
+            .textContent =
+            "📚 Group " +
+            grammarActual.grupo +
+            " • Te damos el " +
+            nombresFormas[
+                formaMostrada
+            ] +
+            " y completas las otras 3 formas.";
+
+
+        let html =
+            "<table>";
+
+
+        html +=
+            "<thead>" +
+            "<tr>";
+
+
+        nombresFormas.forEach(
+            function(nombre) {
+
+                html +=
+                    "<th>" +
+                    nombre +
+                    "</th>";
+
+            }
+        );
+
+
+        html +=
+            "</tr>" +
+            "</thead>";
+
+
+        html +=
+            "<tbody>" +
+            "<tr>";
+
+
+        verbo.forEach(
+            function(forma, indice) {
+
+                if (
+                    indice ===
+                    formaMostrada
+                ) {
+
+                    html +=
+                        '<td class="celda-pista">' +
+                        '<span class="pista">' +
+                        forma +
+                        "</span>" +
+                        "</td>";
+
+                } else {
+
+                    html +=
+                        "<td>" +
+
+                        '<input ' +
+                        'id="grammarInput' +
+                        indice +
+                        '" ' +
+                        'class="grammar-input" ' +
+                        'type="text" ' +
+                        'autocomplete="off" ' +
+                        'placeholder="Escribe aquí">' +
+
+                        "</td>";
+                }
+
+            }
+        );
+
+
+        html +=
+            "</tr>" +
+            "</tbody>" +
+            "</table>";
+
+
+        document
+            .getElementById(
+                "tablaPreguntaGrammar"
+            )
+            .innerHTML =
+            html;
+
+
+        document
+            .getElementById(
+                "grammarFeedback"
+            )
+            .textContent = "";
+
+
+        document
+            .getElementById(
+                "grammarFeedback"
+            )
+            .className =
+            "grammar-feedback";
+
+
+        const primeraCaja =
+            document.querySelector(
+                ".grammar-input"
+            );
+
+
+        if (primeraCaja) {
+            primeraCaja.focus();
+        }
+
+
+        /*
+            Dictado automático.
+        */
+
+        timerGrammar =
+            setTimeout(
+                escucharGrammar,
+                700
+            );
+    }
+
+
+    // ==========================================
+    // GRAMMAR - ESCUCHAR
+    // ==========================================
+
+    function escucharGrammar() {
+
+        if (!grammarActual) {
+            return;
+        }
+
+
+        let texto =
+            grammarActual.verbo[
+                grammarActual.forma
+            ];
+
+
+        /*
+            READ:
+            presente = read
+            pasado = red
+            participio = red
+        */
+
+        if (
+            texto === "read" &&
+            (
+                grammarActual.forma === 1 ||
+                grammarActual.forma === 2
+            )
+        ) {
+
+            texto = "red";
+        }
+
+
+        /*
+            WIND:
+            presente = wind
+            pasado = wound
+        */
+
+        if (
+            texto === "wound" ||
+            texto === "wind"
+        ) {
+
+            if (
+                grammarActual.forma === 0
+            ) {
+
+                texto = "wind";
+
+            } else {
+
+                texto = "wound";
+            }
+        }
+
+
+        hablar(
+            texto,
+            0.75
+        );
+    }
+
+
+    // ==========================================
+    // GRAMMAR - COMPROBAR
+    // ==========================================
+
+    function comprobarGrammar() {
+
+        if (!grammarActual) {
+            return;
+        }
+
+
+        let todoCorrecto = true;
+
+
+        for (
+            let indice = 0;
+            indice < 4;
+            indice++
+        ) {
+
+            /*
+                Esta es la casilla que ya
+                nos dio el ejercicio.
+            */
+
+            if (
+                indice ===
+                grammarActual.forma
+            ) {
+
+                continue;
+            }
+
+
+            const input =
+                document
+                    .getElementById(
+                        "grammarInput" +
+                        indice
+                    );
+
+
+            if (!input) {
+                continue;
+            }
+
+
+            const respuestaUsuario =
+                input.value;
+
+
+            const solucionCorrecta =
+                grammarActual.verbo[indice];
+
+
+            if (
+                !esRespuestaCorrecta(
+                    respuestaUsuario,
+                    solucionCorrecta
+                )
+            ) {
+
+                todoCorrecto = false;
+            }
+        }
+
+
+        const feedback =
+            document.getElementById(
+                "grammarFeedback"
+            );
+
+
+        if (todoCorrecto) {
+
+            grammarCorrectas++;
+
+
+            feedback.textContent =
+                "✅ ¡Tabla correcta! 🎉";
+
+            feedback.className =
+                "grammar-feedback correcto";
+
+        } else {
+
+            grammarIncorrectas++;
+
+
+            let respuestas =
+                "<br><br>" +
+                "<strong>Respuestas correctas:</strong><br>";
+
+
+            grammarActual.verbo.forEach(
+                function(forma, indice) {
+
+                    if (
+                        indice !==
+                        grammarActual.forma
+                    ) {
+
+                        respuestas +=
+                            nombresFormas[indice] +
+                            ": " +
+                            forma +
+                            "<br>";
+                    }
+                }
+            );
+
+
+            feedback.innerHTML =
+                "❌ Hay una o más respuestas incorrectas." +
+                respuestas;
+
+
+            feedback.className =
+                "grammar-feedback incorrecto";
+        }
+
+
+        grammarPosicion++;
+
+
+        timerGrammar =
+            setTimeout(
+                mostrarPreguntaGrammar,
+                2200
+            );
+    }
+
+
+    // ==========================================
+    // GRAMMAR - RESULTADOS
+    // ==========================================
+
+    function mostrarResultadosGrammar() {
+
+        const total =
+            grammarPreguntas.length;
+
+
+        const porcentaje =
+            total === 0
+                ? 0
+                : Math.round(
+                    (
+                        grammarCorrectas /
+                        total
+                    ) * 100
+                );
+
+
+        document
+            .getElementById(
+                "grammarResumen"
+            )
+            .innerHTML =
+
+            "<h2>📊 Resultado</h2>" +
+
+            "<p>📝 Preguntas: " +
+            total +
+            "</p>" +
+
+            "<p>✅ Tablas correctas: " +
+            grammarCorrectas +
+            "</p>" +
+
+            "<p>❌ Tablas incorrectas: " +
+            grammarIncorrectas +
+            "</p>" +
+
+            "<h2>⭐ Calificación: " +
+            porcentaje +
+            "%</h2>";
+
+
+        mostrarSeccion(
+            "grammarResultados"
+        );
+    }
+
+
+    function volverGrammar() {
+
+        window.speechSynthesis.cancel();
+
+        clearTimeout(
+            timerGrammar
+        );
+
+        mostrarSeccion(
+            "grammarInicio"
+        );
+    }
+
+
+    // ==========================================
+    // ENTER EN GRAMMAR
+    // ==========================================
+
+    document.addEventListener(
+        "keydown",
+        function(event) {
+
+            if (
+                event.key === "Enter" &&
+                !document
+                    .getElementById(
+                        "grammarExamen"
+                    )
+                    .classList
+                    .contains("oculto")
+            ) {
+
+                comprobarGrammar();
+            }
+        }
+    );
+
+
+    // ==========================================
+    // TABLA INICIAL
+    // ==========================================
+
+    mostrarTablaGrammar();
+
 </script>
-```
 
 </body>
-
 </html>
